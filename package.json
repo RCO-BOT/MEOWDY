@@ -17,7 +17,7 @@
     "elara-services": "^1.2.6",
     "express": "^4.17.1",
     "great-commando": "github:elara-bots/great-commando#v12",
-    "ifttt-webhooks-channel": "^1.1.4",
+    "ifttt-webhooks-channel": "^1.1.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
