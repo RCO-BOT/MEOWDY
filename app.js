@@ -7,13 +7,35 @@ const Discord = require("discord.js"),
           messageCacheMaxSize: 1,
           messageCacheLifetime: 1,
           ws: {
-              intents: [
-                  "GUILD_MEMBERS",
-                  "GUILDS",
-              ]
-          }
+            intents: [
+                "GUILD_MEMBERS",
+                "GUILDS",
+                "GUILD_MESSAGES"
+            ]
+        }
       });
 client.on("ready", () => console.log(`The bot is online!`));
+
+client.on("message", async (msg) => {
+    if(msg.author.bot || msg.channel.type === "dm") return null;
+     const IFTTT = require('ifttt-webhooks-channel')
+            const ifttt = new IFTTT(process.env.IFTTT_KEY)
+    if(msg.content.toLowerCase().includes("m.lights on")){
+          ifttt.post('light_on')
+                .then(res => console.log(res))
+                .catch(err => console.error(err))
+                msg.channel.send(`Lights on!`)
+                
+    }else
+    if(msg.content.toLowerCase().includes("m.lights off")){
+      ifttt.post('light_off')
+                .then(res => console.log(res))
+                .catch(err => console.error(err))
+                msg.channel.send(`Lights off!`)
+    }
+    })
+
+
 client.login(process.env.TOKEN).catch((err) => {
     console.log(`LOGIN ISSUE\n`, err)
     return process.exit(1);
