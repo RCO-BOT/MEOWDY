@@ -58,5 +58,16 @@ app.get(`/members/:id/vip`, async (req, res) => {
     if(member.roles.cache.has(process.env.ROLE_TWO)) return res.json({status: true, tier: 1});
     return res.json({status: false, tier: 0});
 })
+app.get(`/members/:id/mod`, async (req, res) => {
+    let {id} = req.params;
+    if(!id) return res.json({status: false, mod: 0});
+    let guild = client.guilds.cache.get(process.env.GUILD_ID);
+    if(!guild) return res.json({status: false, mod: 0});
+    let member = guild.members.cache.get(id);
+    if(!member) member = await guild.members.fetch(id, true).catch(() => null);
+    if(!member) return res.json({status: false, mod: 0});
+    if(member.roles.cache.has(process.env.MOD_ROLE)) return res.json({status: true, mod: 1});
+    return res.json({status: false, mod: 0});
+})
 app.listen(PORT, () => console.log(`API started on port: ${PORT}`));
 
