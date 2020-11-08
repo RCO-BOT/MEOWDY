@@ -78,9 +78,9 @@ const getMember = async (userID) => { // This is a shortcut to get the member.. 
                 1: process.env.ROLE_ONE,
                 2: process.env.ROLE_TWO,
             };
-            if(member.roles.cache.has(roles[2])) return 10000;
-            if(member.roles.cache.has(roles[1])) return 5000;
-            return 1000;
+            if(member.roles.cache.has(roles[2])) return 30000;
+            if(member.roles.cache.has(roles[1])) return 15000;
+            return 3000;
         };
         let db = await Profile.findOne({id: user.id});
         if(!db) return false;
