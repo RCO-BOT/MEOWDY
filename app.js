@@ -151,6 +151,44 @@ app.post("/upvote/dboats", async (req, res) => {
 });
 
 
+app.post("/upvote/bfd", async (req, res) => {
+  if(!client.user) return error(res, `The Meowdy bot client isn't active.`);
+  let key = req.headers["authorization"];
+  if(!key) return error(res, "You didn't provide the 'authorization' header!");
+  if(key !== process.env.ADMINKEY) return error(res, `Unauthorized`);
+  if(!req.body.user) return error(res, `You didn't provide the "user" field in the body request.`)
+  let user = await client.users.fetch(req.body.user, true).catch(() => null);
+  if(!user) return error(res, `I was unable to fetch the user information for ${req.body.user}`);
+
+  let vote = await handleVote(user, {
+      title: "Vote Here",
+      url: `https://botsfordiscord.com/bot/${req.body.bot}/vote`,
+      color: 0x2578fe,
+      timestamp: new Date(),
+      author: {
+          name: `New Vote By: @${user.tag}`,
+          icon_url: user.displayAvatarURL({dynamic: true})
+      },  
+      footer: {
+          text: `Bots For Discord`,
+          icon_url: `https://cdn.discordapp.com/emojis/735559564153454734.png?v=1`
+      }
+  });
+  if(!vote) return error(res, `No DB found for ${user.tag} (${user.id})`);
+  return res.json({
+      status: true,
+      message: `Successfully upvoted!`
+  })
+});
+
+
+// ^------------------------------------------ UPVOTES ---------------------------------------------^
+
+
+
+
+
+
 
 app.get(`/members/:id/vip`, async (req, res) => {
     let {id} = req.params;
